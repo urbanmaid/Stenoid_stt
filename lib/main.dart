@@ -1,7 +1,11 @@
 //import 'dart:ffi';
-
+//module functions
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+
+//my functions
 import 'package:stenoid_stt/shortcut.dart';
+import 'package:stenoid_stt/recordcontrol.dart';
 
 void main() {
   runApp(const MyApp());
@@ -58,31 +62,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
+  //layout var
   double pdBtn = 10;
   double pdColumn = 8;
   double pdWinBorder = 20;
   double iconSize = 24;
   double iconSizeLarge = 40;
 
-  String text_ex = printMessage("Example of Message");
-
   Size btnDefault = const Size(150, 50);
 
-  void _doRecord() {
-    setState(() {
-      _counter++;
-    });
-  }
+  //function var
+  String text_ex = printMessage("Example of Message");
+
+  //function class
+  SoundRecorder srec = SoundRecorder();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      /*
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
+      */
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -111,12 +114,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     ElevatedButton(
                       onPressed: () {
+                        srec.startRecording();
                         final snackBar = SnackBar(
                           content: Text(text_ex),
                         );
-                        
-                        // ScaffoldMessenger를 사용하여 SnackBar를 현재 context에 표시
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        //module_mic.
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: btnDefault, // 버튼의 최소 크기를 200x50으로 설정
@@ -138,6 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     SizedBox(width: pdBtn, height: pdBtn), // 버튼 사이의 간격
                     ElevatedButton(
                       onPressed: () {
+                        srec.pauseRecording();
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: btnDefault, // 버튼의 최소 크기를 200x50으로 설정
@@ -158,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     SizedBox(width: pdBtn, height: pdBtn), // 버튼 사이의 간격
                     ElevatedButton(
                       onPressed: () {
+                        srec.stopRecording();
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: btnDefault, // 버튼의 최소 크기를 200x50으로 설정
