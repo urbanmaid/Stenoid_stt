@@ -11,7 +11,7 @@ def amplify_record(data, factor):
     return numpydata.tobytes()
 
 class Recorder:
-    def __init__(self):
+    def __init__(self, outputDir, outputName):
         self.FORMAT = pyaudio.paInt16
         self.CHANNELS = 1
         self.RATE = 44100
@@ -19,8 +19,8 @@ class Recorder:
         self.frames = []
         self.VOLUME = 3
 
-        self.OPT_DIR = os.path.dirname(os.path.realpath(__file__))
-        self.OPT_NAME = "output.mp3"
+        self.OPT_DIR = outputDir
+        self.OPT_NAME = outputName
         self.WAVE_OUTPUT_FILENAME = os.path.join(self.OPT_DIR, self.OPT_NAME)
 
         self.audio = pyaudio.PyAudio()

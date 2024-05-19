@@ -1,12 +1,12 @@
 import asyncio
 import customtkinter
-
+import os
 import threading
 import tkinter
 
-from audio_recorder import Recorder
-from ui_margins import UIMargins
-from recognition_whisper import RecognizerWhisper
+from modules.audio_recorder import Recorder
+from modules.ui_margins import UIMargins
+from modules.recognition_whisper import RecognizerWhisper
 
 
 # Default Options
@@ -17,7 +17,9 @@ stringVarStatusAux = tkinter.StringVar(master = root)
 stringVarStatusAux.set("Tap Record To do record.")
 
 # Module and Class Definition
-recorder = Recorder()
+optName = "output.mp3"
+recorder = Recorder(outputDir = os.path.dirname(os.path.realpath(__file__)), outputName = optName)
+recognizerW = RecognizerWhisper(modelSize = "base")
 uiMargins = UIMargins()
 event = asyncio.Event()
 
@@ -40,6 +42,7 @@ def do_record_thread():
 
 async def stop_record():
     await recorder.stop_record()
+    print(recognizerW.Convert("output.mp3"))
     print("Stop Recording")
 
 def stop_record_sync():
@@ -48,7 +51,6 @@ def stop_record_sync():
 def stop_record_thread():
     threading.Thread(target=stop_record_sync, daemon=True).start()
     stringVarStatusAux.set("Tap Record To do record.")
-
 
 # Pause Record
 async def pause_record():
