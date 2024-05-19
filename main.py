@@ -1,9 +1,13 @@
 import asyncio
-import tkinter
 import customtkinter
+
+import threading
+import tkinter
+
 from audio_recorder import Recorder
 from ui_margins import UIMargins
-import threading
+from recognition_whisper import RecognizerWhisper
+
 
 # Default Options
 root = tkinter.Tk()
