@@ -1,16 +1,11 @@
-# stenoid_stt
+# Project stenoid_stt
+A python based speech recognition and auto fix program.
 
-A new Flutter project.
+## Concept
+## Features
+This project goals into that activates the microphone when the user wants and inputs typing using the user's voice, for implementing Windows OS, which has subtly insignificant voice recognition capabilities. In addition to this function, the program may also include a function to correct the user's inaccurate pronunciation with AI.
+## Logs
+[Logs of Development](https://sun-moonflower-1cc.notion.site/SW-320bec5e39f24f4ea594fa3247411583)
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# License
+This project follows [GNU License](https://www.gnu.org/licenses/gpl-3.0.html). 
