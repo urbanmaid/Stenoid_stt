@@ -11,6 +11,7 @@ from modules.recognition_whisper import RecognizerWhisper
 
 # Default Options
 root = tkinter.Tk()
+settingsWindow = ""
 stringVarStatus = tkinter.StringVar(master = root)
 stringVarStatus.set("Idle")
 stringVarStatusAux = tkinter.StringVar(master = root)
@@ -25,6 +26,7 @@ uiMargins = UIMargins()
 event = asyncio.Event()
 
 isPaused = False
+usingsettingWin = False
 RECORD_SECONDS = 20
 
 async def do_record():
@@ -76,7 +78,16 @@ def pause_resume_control_thread():
 
 def gram_fix():
     fixedText = (recognizerW.GramFix(resultTextbox.get("1.0", tkinter.END)))
-    print(fixedText)
+    resultTextbox.delete("1.0", tkinter.END)
+    resultTextbox.insert(tkinter.END, fixedText)
+    # print(fixedText)
+
+def open_settings():
+    global usingsettingWin
+    if (usingsettingWin == False):
+        usingsettingWin = True
+        settingsWindow = customtkinter.CTkToplevel(app)
+        settingsWindow.title("Settings")
 
 def discard_result():
     resultTextbox.delete("1.0", tkinter.END)
@@ -129,10 +140,10 @@ labelStatusAux.pack()
 rightFrame = customtkinter.CTkFrame(master = mainFrame)
 rightFrame.pack(side = 'left')
 
-buttonGram = customtkinter.CTkButton(master=rightFrame, text="Grammar Fix", command=gram_fix)
+buttonGram = customtkinter.CTkButton(master=rightFrame, text="Fix", command=gram_fix)
 buttonGram.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
-buttonPunc = customtkinter.CTkButton(master=rightFrame, text="Punc Fix", command=pause_resume_control_thread)
+buttonPunc = customtkinter.CTkButton(master=rightFrame, text="Settings", command=open_settings)
 buttonPunc.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
 buttonDiscard = customtkinter.CTkButton(master=rightFrame, text="Discard", command=discard_result)

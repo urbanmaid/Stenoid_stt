@@ -25,9 +25,9 @@ class RecognizerWhisper():
             model="gpt-3.5-turbo-0301",
             messages=[
                 {"role": "system", "content": "This is a service for fixing grammar and punctuation."},
-                {"role": "user", "content": f"Fix the grammar and punctuation of this sentence: \"{text}\""}
+                {"role": "user", "content": f"Fix the grammar and punctuation of this sentence, without Language Changes: \"{text}\""}
             ],
-            max_tokens=100,
+            max_tokens=250,
             top_p=1,
             frequency_penalty=0.0,
             presence_penalty=0.0,
