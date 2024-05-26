@@ -1,7 +1,10 @@
+import os
 import whisper
+import openai
 import ffmpeg
 
 modelSizeList = ["base", "small", "medium"]
+openai.api_key = os.getenv('OPENAI_APIKEY') #this is my key so others cannot use this one.
 
 class RecognizerWhisper():
     def __init__(self, modelSize):
@@ -16,3 +19,19 @@ class RecognizerWhisper():
         audioFile = whisper.load_audio(audioSource)
         result = self.model.transcribe(audioFile)
         return result['text']
+
+    def GramFix(self, text):
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo-0301",
+            messages=[
+                {"role": "system", "content": "This is a service for fixing grammar and punctuation."},
+                {"role": "user", "content": f"Fix the grammar and punctuation of this sentence: \"{text}\""}
+            ],
+            max_tokens=100,
+            top_p=1,
+            frequency_penalty=0.0,
+            presence_penalty=0.0,
+            stop=["\n"]
+        )
+        print(response.choices[0].message.content)
+        return response.choices[0].message.content

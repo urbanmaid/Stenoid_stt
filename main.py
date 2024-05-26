@@ -18,6 +18,7 @@ stringVarStatusAux.set("Tap Record To do record.")
 
 # Module and Class Definition
 optName = "output.mp3"
+fixedText = ""
 recorder = Recorder(outputDir = os.path.dirname(os.path.realpath(__file__)), outputName = optName)
 recognizerW = RecognizerWhisper(modelSize = "base")
 uiMargins = UIMargins()
@@ -41,9 +42,12 @@ def do_record_thread():
     stringVarStatusAux.set("Tap Stop to convert to text.")
 
 async def stop_record():
-    await recorder.stop_record()
-    print(recognizerW.Convert("output.mp3"))
+    if (recorder.is_recording == True):
+        await recorder.stop_record()
+    textTarget = recognizerW.Convert("output.mp3")
+    print(textTarget)
     print("Stop Recording")
+    resultTextbox.insert(tkinter.END, textTarget)
 
 def stop_record_sync():
     asyncio.run(stop_record())
@@ -70,15 +74,30 @@ def pause_resume_control_thread():
         isPaused = False
         threading.Thread(target=(asyncio.run(resume_record())), daemon=True).start()
 
+def gram_fix():
+    fixedText = (recognizerW.GramFix(resultTextbox.get("1.0", tkinter.END)))
+    print(fixedText)
+
+def discard_result():
+    resultTextbox.delete("1.0", tkinter.END)
+
 # UI Settings
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
 app = customtkinter.CTk()
-app.geometry("600x240")
+app.geometry(str(uiMargins.appSizeX) + "x" + str(uiMargins.appSizeY))
 app.resizable(width=False, height=False)
 
-mainFrame = customtkinter.CTkFrame(master = app)
-mainFrame.place(relx=0.5, rely=0.5, anchor=customtkinter.CENTER)
+main = customtkinter.CTkFrame(master = app)
+main.place(relx=0.5, rely=0.5, anchor=customtkinter.CENTER)
+
+resultTextbox = customtkinter.CTkTextbox(master = main, width = (uiMargins.appSizeX - uiMargins.frameMargin), height = 80, font = ('Arial', uiMargins.textSizeResult, 'normal'))
+#resultTextbox.place(relx=0.5, rely=0.5, anchor=customtkinter.CENTER)
+resultTextbox.pack()
+
+mainFrame = customtkinter.CTkFrame(master = main)
+#mainFrame.place(relx=0.5, rely=0.5, anchor=customtkinter.CENTER)
+mainFrame.pack()
 
 # left
 leftFrame = customtkinter.CTkFrame(master = mainFrame)
@@ -100,7 +119,7 @@ buttonLanguages.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 centerFrame = customtkinter.CTkFrame(master = mainFrame, fg_color = 'transparent')
 centerFrame.pack(side = 'left')
 
-labelStatus = customtkinter.CTkLabel(master = centerFrame, textvariable = stringVarStatus, font = ('Arial', 22, 'bold'), width = 200, fg_color="transparent")
+labelStatus = customtkinter.CTkLabel(master = centerFrame, textvariable = stringVarStatus, font = ('Arial', uiMargins.textSizeStatus, 'bold'), width = 200, fg_color="transparent")
 labelStatus.pack()
 
 labelStatusAux = customtkinter.CTkLabel(master = centerFrame, textvariable = stringVarStatusAux, fg_color="transparent")
@@ -110,13 +129,13 @@ labelStatusAux.pack()
 rightFrame = customtkinter.CTkFrame(master = mainFrame)
 rightFrame.pack(side = 'left')
 
-buttonGram = customtkinter.CTkButton(master=rightFrame, text="Grammar Fix", command=do_record_thread)
+buttonGram = customtkinter.CTkButton(master=rightFrame, text="Grammar Fix", command=gram_fix)
 buttonGram.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
 buttonPunc = customtkinter.CTkButton(master=rightFrame, text="Punc Fix", command=pause_resume_control_thread)
 buttonPunc.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
-buttonDiscard = customtkinter.CTkButton(master=rightFrame, text="Discard", command=stop_record_thread)
+buttonDiscard = customtkinter.CTkButton(master=rightFrame, text="Discard", command=discard_result)
 buttonDiscard.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
 buttonInput = customtkinter.CTkButton(master=rightFrame, text="Input", command=stop_record_thread)
