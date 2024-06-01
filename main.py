@@ -8,6 +8,7 @@ from modules.audio_recorder import Recorder
 from modules.ui_margins import UIMargins
 from modules.recognition_whisper import RecognizerWhisper
 
+# update for backup
 
 # Default Options
 root = tkinter.Tk()
