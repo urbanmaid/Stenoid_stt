@@ -29,7 +29,7 @@ class Settings:
         self.languageSelectionFrame.pack(fill="x", expand=True, padx = self.uiMargins.btnMargin, pady = self.uiMargins.btnMargin)
         self.languageSelectionDesc = customtkinter.CTkLabel(self.languageSelectionFrame, text="Languages")
         self.languageSelectionDesc.pack(side = 'left')
-        self.languageSelection = customtkinter.CTkOptionMenu(self.languageSelectionFrame, values=["option 1", "option 2"])
+        self.languageSelection = customtkinter.CTkOptionMenu(self.languageSelectionFrame, values=val_language)
         self.languageSelection.pack(side = 'right')
 
         self.modelSelectionFrame = customtkinter.CTkFrame(self.settingsMainframe)
