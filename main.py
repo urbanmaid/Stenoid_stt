@@ -10,12 +10,12 @@ from modules.audio_recorder import Recorder
 from modules.ui_margins import UIMargins
 from modules.recognition_whisper import RecognizerWhisper
 from modules.locales import LocaleManager
+from modules.menu_settings import Settings
 
 # update for backup
 
-# Default Options
-#root = tkinter.Tk()
-settingsWindow = ""
+# App definition
+app = customtkinter.CTk()
 
 # Module and Class Definition
 optName = "output.mp3"
@@ -27,6 +27,15 @@ recognizerW = RecognizerWhisper(modelSize = "base")
 uiMargins = UIMargins()
 event = asyncio.Event()
 locale = LocaleManager()
+settingsWindow = Settings(app)
+
+# Default Settings
+app.geometry(str(uiMargins.appSizeX) + "x" + str(uiMargins.appSizeY))
+app.resizable(width=False, height=False)
+stringVarStatus = customtkinter.StringVar(master = app, value = "Idle")
+stringVarStatusAux = customtkinter.StringVar(master = app, value = "Tap Record to start record.")
+stringVarStatus.set(locale.data["status_idle"])
+stringVarStatusAux.set(locale.data["statusaux_idle"])
 
 isPaused = False
 usingsettingWin = False
@@ -96,8 +105,7 @@ def open_settings():
     global usingsettingWin
     if (usingsettingWin == False):
         usingsettingWin = True
-        settingsWindow = customtkinter.CTkToplevel(app)
-        settingsWindow.title("Settings")
+        settingsWindow.openSettings()
 
 def discard_result():
     resultTextbox.delete("1.0", tkinter.END)
@@ -113,13 +121,6 @@ def copy_converted_text():
 # UI Settings
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
-app = customtkinter.CTk()
-app.geometry(str(uiMargins.appSizeX) + "x" + str(uiMargins.appSizeY))
-app.resizable(width=False, height=False)
-stringVarStatus = customtkinter.StringVar(master = app, value = "Idle")
-stringVarStatusAux = customtkinter.StringVar(master = app, value = "Tap Record to start record.")
-stringVarStatus.set(locale.data["status_idle"])
-stringVarStatusAux.set(locale.data["statusaux_idle"])
 
 main = customtkinter.CTkFrame(master = app)
 main.place(relx=0.5, rely=0.5, anchor=customtkinter.CENTER)
