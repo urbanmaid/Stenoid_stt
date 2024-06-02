@@ -3,28 +3,30 @@ import customtkinter
 import os
 import threading
 import tkinter
+import pyperclip
+import time
 
 from modules.audio_recorder import Recorder
 from modules.ui_margins import UIMargins
 from modules.recognition_whisper import RecognizerWhisper
+from modules.locales import LocaleManager
 
 # update for backup
 
 # Default Options
-root = tkinter.Tk()
+#root = tkinter.Tk()
 settingsWindow = ""
-stringVarStatus = tkinter.StringVar(master = root)
-stringVarStatus.set("Idle")
-stringVarStatusAux = tkinter.StringVar(master = root)
-stringVarStatusAux.set("Tap Record To do record.")
 
 # Module and Class Definition
 optName = "output.mp3"
 fixedText = ""
+
+# Module loader
 recorder = Recorder(outputDir = os.path.dirname(os.path.realpath(__file__)), outputName = optName)
 recognizerW = RecognizerWhisper(modelSize = "base")
 uiMargins = UIMargins()
 event = asyncio.Event()
+locale = LocaleManager()
 
 isPaused = False
 usingsettingWin = False
@@ -42,32 +44,39 @@ def do_record_sync():
 
 def do_record_thread():
     threading.Thread(target=do_record_sync, daemon=True).start()
-    stringVarStatusAux.set("Tap Stop to convert to text.")
+    stringVarStatus.set(locale.data["status_recording"])
+    stringVarStatusAux.set(locale.data["statusaux_recording"])
 
 async def stop_record():
-    if (recorder.is_recording == True):
+    if recorder.is_recording:
         await recorder.stop_record()
     textTarget = recognizerW.Convert("output.mp3")
     print(textTarget)
     print("Stop Recording")
     resultTextbox.insert(tkinter.END, textTarget)
 
-def stop_record_sync():
-    asyncio.run(stop_record())
+def stop_record_sync(loop):
+    asyncio.run_coroutine_threadsafe(stop_record(), loop)
 
 def stop_record_thread():
-    threading.Thread(target=stop_record_sync, daemon=True).start()
-    stringVarStatusAux.set("Tap Record To do record.")
+    loop = asyncio.get_event_loop()
+    threading.Thread(target=stop_record_sync, args=(loop,), daemon=True).start()
+    stringVarStatus.set(locale.data["status_idle"])
+    stringVarStatusAux.set(locale.data["statusaux_idle"])
 
 # Pause Record
 async def pause_record():
     await recorder.pause_record()
     print("Pause Recording")
+    stringVarStatus.set(locale.data["status_paused"])
+    stringVarStatusAux.set(locale.data["statusaux_paused"])
 
 # Resume Record
 async def resume_record():
     await recorder.resume_record()
     print("Resume Recording")
+    stringVarStatus.set(locale.data["status_recording"])
+    stringVarStatusAux.set(locale.data["statusaux_recording"])
 
 def pause_resume_control_thread():
     if (isPaused == False):
@@ -93,12 +102,24 @@ def open_settings():
 def discard_result():
     resultTextbox.delete("1.0", tkinter.END)
 
+def copy_converted_text():
+    pyperclip.copy(resultTextbox.get("1.0", tkinter.END))
+    stringVarStatus.set(locale.data["status_copied"])
+    stringVarStatusAux.set(locale.data["statusaux_copied"])
+    time.sleep(1)
+    stringVarStatus.set(locale.data["status_idle"])
+    stringVarStatusAux.set(locale.data["statusaux_idle"])
+
 # UI Settings
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
 app = customtkinter.CTk()
 app.geometry(str(uiMargins.appSizeX) + "x" + str(uiMargins.appSizeY))
 app.resizable(width=False, height=False)
+stringVarStatus = customtkinter.StringVar(master = app, value = "Idle")
+stringVarStatusAux = customtkinter.StringVar(master = app, value = "Tap Record to start record.")
+stringVarStatus.set(locale.data["status_idle"])
+stringVarStatusAux.set(locale.data["statusaux_idle"])
 
 main = customtkinter.CTkFrame(master = app)
 main.place(relx=0.5, rely=0.5, anchor=customtkinter.CENTER)
@@ -115,16 +136,16 @@ mainFrame.pack()
 leftFrame = customtkinter.CTkFrame(master = mainFrame)
 leftFrame.pack(side = 'left')
 
-buttonRec = customtkinter.CTkButton(master=leftFrame, text="Record", command=do_record_thread)
+buttonRec = customtkinter.CTkButton(master=leftFrame, text=locale.data["button_record"], command=do_record_thread)
 buttonRec.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
-buttonPause = customtkinter.CTkButton(master=leftFrame, text="Pause", command=pause_resume_control_thread)
+buttonPause = customtkinter.CTkButton(master=leftFrame, text=locale.data["button_pause"], command=pause_resume_control_thread)
 buttonPause.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
-buttonStop = customtkinter.CTkButton(master=leftFrame, text="Stop", command=stop_record_thread)
+buttonStop = customtkinter.CTkButton(master=leftFrame, text=locale.data["button_stop"], command=stop_record_thread)
 buttonStop.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
-buttonLanguages = customtkinter.CTkButton(master=leftFrame, text="Languages", command=stop_record_thread)
+buttonLanguages = customtkinter.CTkButton(master=leftFrame, text=locale.data["button_languages"], command=stop_record_thread)
 buttonLanguages.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
 # center
@@ -141,16 +162,16 @@ labelStatusAux.pack()
 rightFrame = customtkinter.CTkFrame(master = mainFrame)
 rightFrame.pack(side = 'left')
 
-buttonGram = customtkinter.CTkButton(master=rightFrame, text="Fix", command=gram_fix)
+buttonGram = customtkinter.CTkButton(master=rightFrame, text=locale.data["button_fix"], command=gram_fix)
 buttonGram.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
-buttonPunc = customtkinter.CTkButton(master=rightFrame, text="Settings", command=open_settings)
+buttonPunc = customtkinter.CTkButton(master=rightFrame, text=locale.data["button_settings"], command=open_settings)
 buttonPunc.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
-buttonDiscard = customtkinter.CTkButton(master=rightFrame, text="Discard", command=discard_result)
+buttonDiscard = customtkinter.CTkButton(master=rightFrame, text=locale.data["button_discard"], command=discard_result)
 buttonDiscard.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
-buttonInput = customtkinter.CTkButton(master=rightFrame, text="Input", command=stop_record_thread)
+buttonInput = customtkinter.CTkButton(master=rightFrame, text=locale.data["button_input"], command=copy_converted_text)
 buttonInput.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
 def main():

@@ -1,0 +1,19 @@
+{
+    "status_idle": "대기 중",
+    "status_recording": "녹음 중",
+    "status_paused": "일시 대기",
+    "status_copied": "복사됨",
+    "statusaux_idle": "녹음 버튼으로 녹음을 시작합니다.",
+    "statusaux_recording": "녹음 중지로 내용을 표시합니다.",
+    "statusaux_paused": "녹음 버튼으로 녹음을 재개합니다.",
+    "statusaux_copied": "Ctrl V로 내용을 삽입하세요.",
+
+    "button_record": "녹음",
+    "button_pause": "일시정지",
+    "button_stop": "정지",
+    "button_languages": "언어",
+    "button_fix": "문법 수정",
+    "button_settings": "설정",
+    "button_discard": "초기화",
+    "button_input": "입력"
+}

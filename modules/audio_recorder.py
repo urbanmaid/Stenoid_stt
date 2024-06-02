@@ -17,7 +17,7 @@ class Recorder:
         self.RATE = 44100
         self.CHUNK = 1024
         self.frames = []
-        self.VOLUME = 3
+        self.VOLUME = 2
 
         self.OPT_DIR = outputDir
         self.OPT_NAME = outputName
@@ -48,24 +48,26 @@ class Recorder:
         self.is_recording = True
 
     async def stop_record(self):
-        self.is_recording = False
+        try:
+            self.is_recording = False
+            self.stream.stop_stream()
+            self.stream.close()
 
-        self.stream.stop_stream()
-        self.stream.close()
+            amplified_frames = []
+            for data in self.frames:
+                amplified_data = amplify_record(data, self.VOLUME)
+                amplified_frames.append(amplified_data)
 
-        amplified_frames = []
-        for data in self.frames:
-            amplified_data = amplify_record(data, self.VOLUME)
-            amplified_frames.append(amplified_data)
+            wf = wave.open(self.WAVE_OUTPUT_FILENAME, 'wb')
+            wf.setnchannels(self.CHANNELS)
+            wf.setsampwidth(self.audio.get_sample_size(self.FORMAT))
+            wf.setframerate(self.RATE)
+            wf.writeframes(b''.join(amplified_frames))
+            wf.close()
 
-        wf = wave.open(self.WAVE_OUTPUT_FILENAME, 'wb')
-        wf.setnchannels(self.CHANNELS)
-        wf.setsampwidth(self.audio.get_sample_size(self.FORMAT))
-        wf.setframerate(self.RATE)
-        wf.writeframes(b''.join(amplified_frames))
-        wf.close()
-
-        print("녹음이 완료되었습니다.")
+            print("녹음이 완료되었습니다.")
+        except Exception as e:
+            print(f"Error stopping record: {e}")
 
     async def dispose_record(self):
         self.is_recording = False

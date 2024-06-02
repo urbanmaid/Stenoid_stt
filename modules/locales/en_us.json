@@ -1,0 +1,19 @@
+{
+    "status_idle": "Idle",
+    "status_recording": "Recording",
+    "status_paused": "Paused",
+    "status_copied": "Copied",
+    "statusaux_idle": "Tap Record to start record.",
+    "statusaux_recording": "Tap Stop to convert to text.",
+    "statusaux_paused": "Tap Record to resume record.",
+    "statusaux_copied": "Paste result with Ctrl V.",
+
+    "button_record": "Record",
+    "button_pause": "Pause",
+    "button_stop": "Stop",
+    "button_languages": "Languages",
+    "button_fix": "Fix",
+    "button_settings": "Settings",
+    "button_discard": "Discard",
+    "button_input": "Input"
+}
