@@ -1,0 +1,32 @@
+{
+    "status_idle": "Inactivo",
+    "status_recording": "Grabando",
+    "status_paused": "Pausado",
+    "status_copied": "Copiado",
+    "statusaux_idle": "Comienza a grabar con el botón de grabación.",
+    "statusaux_recording": "Muestra el contenido al detener la grabación.",
+    "statusaux_paused": "Reanuda la grabación con el botón de grabación.",
+    "statusaux_copied": "Pega el contenido con Ctrl V.",
+
+    "button_record": "Grabar",
+    "button_pause": "Pausa",
+    "button_stop": "Detener",
+    "button_languages": "Idiomas",
+    "button_fix": "Corregir Gramática",
+    "button_settings": "Configuración",
+    "button_discard": "Restablecer",
+    "button_input": "Entrada",
+
+    "settings_languages": "Idiomas",
+    "settings_model": "Modelo de Reconocimiento",
+    "settings_richpunct": "Rich Punctuation Application",
+    "settings_detectionlangs": "Detection Languages\nIf empty, the algoritm will decide itself.",
+    "settings_detectionlangs_support": "Supported Languages List", 
+    "settings_maxrecordlen": "Tiempo Máximo de Grabación",
+    "settings_maxtoken": "Uso Máximo de Tokens",
+    "settings_info_repo": "Información del Repositorio (GitHub)",
+    "settings_info_project": "Notas del Proceso de Desarrollo",
+    "settings_visit": "Visitar",
+    "save_button": "Guardar",
+    "save_warning": "Haz clic en guardar para aplicar la configuración."
+}

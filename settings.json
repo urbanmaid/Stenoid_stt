@@ -1,0 +1,14 @@
+{
+    "language": "en_us.json",
+    "api_key": "sk-proj-4jDwasVshogaQOc9sNUtT3BlbkFJFpU8Qh7om7gfQjE6gAFl\n",
+    "use_rich_punc": 1,
+    "max_record_len": 30.0,
+    "max_token": 200.0,
+    "detection_languages": [
+        "English",
+        "Spanish",
+        "Korean",
+        "Japanese",
+        "Russian"
+    ]
+}

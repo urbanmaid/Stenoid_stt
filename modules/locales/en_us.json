@@ -15,5 +15,23 @@
     "button_fix": "Fix",
     "button_settings": "Settings",
     "button_discard": "Discard",
-    "button_input": "Input"
+    "button_input": "Input",
+
+    "gpt_request_gramfix_intro": "This is a service for fixing grammar and punctuation.",
+    "gpt_request_gramfix_desc": "Fix the grammar and punctuation of this sentence, without Language Changes.",
+    "gpt_request_gramfix_richpunc": "Also it needs punctuation fix.",
+
+    "settings_languages": "Languages",
+    "settings_model": "Recognition Model",
+    "settings_apikey": "API Key for Grammar Fix\nKeep it Private Anytime.",
+    "settings_richpunct": "Rich Punctuation Application",
+    "settings_detectionlangs": "Detection Languages\nIf empty, the algoritm will decide itself.",
+    "settings_detectionlangs_support": "Supported Languages List", 
+    "settings_maxrecordlen": "Max Record Time",
+    "settings_maxtoken": "Max Token Usage",
+    "settings_info_repo": "Repository Info(Github)",
+    "settings_info_project": "Project Documentations",
+    "settings_visit": "Visit",
+    "save_button": "Save",
+    "save_warning": "Your Preference will be saved after you click Save, and Applied when you restart the Program."
 }

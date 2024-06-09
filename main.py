@@ -34,12 +34,16 @@ app.geometry(str(uiMargins.appSizeX) + "x" + str(uiMargins.appSizeY))
 app.resizable(width=False, height=False)
 stringVarStatus = customtkinter.StringVar(master = app, value = "Idle")
 stringVarStatusAux = customtkinter.StringVar(master = app, value = "Tap Record to start record.")
+stringVarLangs = customtkinter.StringVar(master = app, value = "Auto")
 stringVarStatus.set(locale.data["status_idle"])
 stringVarStatusAux.set(locale.data["statusaux_idle"])
 
 isPaused = False
 usingsettingWin = False
-RECORD_SECONDS = 20
+RECORD_SECONDS = settingsWindow.settingsList["max_record_len"]
+usingLanguages = ["Auto"]
+usingLanguages += (settingsWindow.settingsList["detection_languages"])
+usingLanguagesIndex = 0
 
 async def do_record():
     await recorder.start_record()  # 녹음 시작
@@ -59,17 +63,17 @@ def do_record_thread():
 async def stop_record():
     if recorder.is_recording:
         await recorder.stop_record()
-    textTarget = recognizerW.Convert("output.mp3")
+    textTarget = recognizerW.Convert("output.mp3", usingLanguages[usingLanguagesIndex])
     print(textTarget)
     print("Stop Recording")
     resultTextbox.insert(tkinter.END, textTarget)
 
-def stop_record_sync(loop):
-    asyncio.run_coroutine_threadsafe(stop_record(), loop)
+def stop_record_sync():
+    asyncio.run(stop_record())
 
 def stop_record_thread():
-    loop = asyncio.get_event_loop()
-    threading.Thread(target=stop_record_sync, args=(loop,), daemon=True).start()
+    #loop = asyncio.get_event_loop()
+    threading.Thread(target=stop_record_sync, daemon=True).start()
     stringVarStatus.set(locale.data["status_idle"])
     stringVarStatusAux.set(locale.data["statusaux_idle"])
 
@@ -95,17 +99,23 @@ def pause_resume_control_thread():
         isPaused = False
         threading.Thread(target=(asyncio.run(resume_record())), daemon=True).start()
 
+def languages_swap():
+    global usingLanguages
+    global usingLanguagesIndex
+    if usingLanguagesIndex < len(usingLanguages) - 1:
+        usingLanguagesIndex += 1    
+    else:
+        usingLanguagesIndex = 0
+    stringVarLangs.set(usingLanguages[usingLanguagesIndex])
+
 def gram_fix():
-    fixedText = (recognizerW.GramFix(resultTextbox.get("1.0", tkinter.END)))
+    fixedText = (recognizerW.GramFix(resultTextbox.get("1.0", tkinter.END), settingsWindow.settingsList["use_rich_punc"]))
     resultTextbox.delete("1.0", tkinter.END)
     resultTextbox.insert(tkinter.END, fixedText)
     # print(fixedText)
 
 def open_settings():
-    global usingsettingWin
-    if (usingsettingWin == False):
-        usingsettingWin = True
-        settingsWindow.openSettings()
+    settingsWindow.openSettings()
 
 def discard_result():
     resultTextbox.delete("1.0", tkinter.END)
@@ -146,7 +156,7 @@ buttonPause.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 buttonStop = customtkinter.CTkButton(master=leftFrame, text=locale.data["button_stop"], command=stop_record_thread)
 buttonStop.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
-buttonLanguages = customtkinter.CTkButton(master=leftFrame, text=locale.data["button_languages"], command=stop_record_thread)
+buttonLanguages = customtkinter.CTkButton(master=leftFrame, text=locale.data["button_languages"], command=languages_swap)
 buttonLanguages.pack(padx = uiMargins.btnMargin, pady = uiMargins.btnMargin)
 
 # center
@@ -158,6 +168,9 @@ labelStatus.pack()
 
 labelStatusAux = customtkinter.CTkLabel(master = centerFrame, textvariable = stringVarStatusAux, fg_color="transparent")
 labelStatusAux.pack()
+
+labelLangs = customtkinter.CTkLabel(master = centerFrame, textvariable = stringVarLangs, fg_color="transparent")
+labelLangs.pack()
 
 # right
 rightFrame = customtkinter.CTkFrame(master = mainFrame)

@@ -17,7 +17,8 @@ class Recorder:
         self.RATE = 44100
         self.CHUNK = 1024
         self.frames = []
-        self.VOLUME = 2
+        self.VOLUME = 1
+        #self.rms_threshold = 80
 
         self.OPT_DIR = outputDir
         self.OPT_NAME = outputName
@@ -37,8 +38,19 @@ class Recorder:
 
     async def record(self):
         while self.is_recording:
-            data = self.stream.read(self.CHUNK, exception_on_overflow = False)
-            self.frames.append(data)
+            try:
+                data = self.stream.read(self.CHUNK, exception_on_overflow=False)
+                self.frames.append(data)
+
+                '''
+                numpydata = np.frombuffer(data, dtype=np.int16)
+                rms = np.sqrt(np.mean(numpydata**2))
+                #print(f"Current RMS level: {rms}")
+                if rms < self.rms_threshold:
+                    print("입력 없음")
+                '''
+            except Exception as e:
+                print(f"Error reading stream data: {e}")
             await asyncio.sleep(0)  # 현재 태스크를 양보하여 다른 비동기 작업이 실행될 수 있도록 합니다.
 
     async def pause_record(self):
@@ -68,6 +80,7 @@ class Recorder:
             print("녹음이 완료되었습니다.")
         except Exception as e:
             print(f"Error stopping record: {e}")
+
 
     async def dispose_record(self):
         self.is_recording = False

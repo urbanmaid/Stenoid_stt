@@ -1,10 +1,20 @@
+import json
 import os
 import whisper
 import openai
 import ffmpeg
 
+from modules.locales import LocaleManager
+
 modelSizeList = ["base", "small", "medium"]
-openai.api_key = os.getenv('OPENAI_APIKEY') #this is my key so others cannot use this one.
+with open('language_map.json', 'r', encoding='utf-8') as f:
+    language_map_table = json.load(f)
+with open('settings.json', 'r', encoding='utf-8') as g:
+    settings = json.load(g)
+keyTemp = (settings["api_key"])
+keyTemp = keyTemp.replace("\n", '')
+openai.api_key = keyTemp #this is my key so others cannot use this one.
+locale = LocaleManager()
 
 class RecognizerWhisper():
     def __init__(self, modelSize):
@@ -15,19 +25,30 @@ class RecognizerWhisper():
             self.modelSize = "base"
         self.model = whisper.load_model(self.modelSize)
 
-    def Convert(self, audioSource):
+    def Convert(self, audioSource, language):
         audioFile = whisper.load_audio(audioSource)
-        result = self.model.transcribe(audioFile)
+        if (language=="Auto"):
+            result = self.model.transcribe(audioFile)
+        else:
+            language_code = language_map_table[language]
+            if (language_code == None):
+                result = self.model.transcribe(audioFile)
+            else:
+                result = self.model.transcribe(audioFile, language=language_code)
         return result['text']
 
-    def GramFix(self, text):
+    def GramFix(self, text, richpunc):
+        if (richpunc == 1):
+            msgcontent = f"{locale.data["gpt_request_gramfix_desc"]} {locale.data["gpt_request_gramfix_richpunc"]} \n \"{text}\""
+        else:
+            msgcontent = f"{locale.data["gpt_request_gramfix_desc"]} \n \"{text}\""
         response = openai.chat.completions.create(
-            model="gpt-3.5-turbo-0301",
+            model="gpt-4-turbo",
             messages=[
-                {"role": "system", "content": "This is a service for fixing grammar and punctuation."},
-                {"role": "user", "content": f"Fix the grammar and punctuation of this sentence, without Language Changes: \"{text}\""}
+                {"role": "system", "content": locale.data["gpt_request_gramfix_intro"]},
+                {"role": "user", "content": msgcontent}
             ],
-            max_tokens=250,
+            max_tokens=int(settings["max_token"]),
             top_p=1,
             frequency_penalty=0.0,
             presence_penalty=0.0,

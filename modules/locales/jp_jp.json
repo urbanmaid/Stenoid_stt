@@ -1,0 +1,32 @@
+{
+    "status_idle": "待機する",
+    "status_recording": "記録中",
+    "status_paused": "一時停止",
+    "status_copied": "コピー済み",
+    "statusaux_idle": "記録を開始するには\n「記録」をタップしてください。",
+    "statusaux_recording": "停止するには「停止」\nをタップしてテキスト\nに変換してください。",
+    "statusaux_paused": "記録を再開するには\n「記録」をタップしてください。",
+    "statusaux_copied": "Ctrl Vで結果を\n貼り付けてください。",
+
+    "button_record": "記録",
+    "button_pause": "一時停止",
+    "button_stop": "停止",
+    "button_languages": "言語",
+    "button_fix": "修理",
+    "button_settings": "設定",
+    "button_discard": "破棄",
+    "button_input": "入力",
+
+    "settings_languages": "言語",
+    "settings_model": "認識モデル",
+    "settings_richpunct": "Rich Punctuation Application",
+    "settings_detectionlangs": "Detection Languages\nIf empty, the algoritm will decide itself.",
+    "settings_detectionlangs_support": "Supported Languages List", 
+    "settings_maxrecordlen": "最大記録時間",
+    "settings_maxtoken": "最大トークン使用量",
+    "settings_info_repo": "リポジトリ情報(Github)",
+    "settings_info_project": "プロジェクトドキュメント",
+    "settings_visit": "訪問する",
+    "save_button": "保存",
+    "save_warning": "設定を保存するには「保存」をクリックしてください。"
+}

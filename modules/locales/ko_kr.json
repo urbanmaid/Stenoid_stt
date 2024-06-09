@@ -15,5 +15,23 @@
     "button_fix": "문법 수정",
     "button_settings": "설정",
     "button_discard": "초기화",
-    "button_input": "입력"
+    "button_input": "입력",
+
+    "gpt_request_gramfix_intro": "이 요청은 문법 및 오타 교정을 위한 요청입니다.",
+    "gpt_request_gramfix_desc": "다음 문장을 번역하지 말고 존재하는 오타와 문법 오류를 고치세요.",
+    "gpt_request_gramfix_richpunc": "또한 문장 부호도 삽입하세요.",
+
+    "settings_languages": "언어",
+    "settings_model": "인식 모델",
+    "settings_apikey": "문법 수정 기능 사용용 API\n절대로 타인과 공유하지 마세요.",
+    "settings_richpunct": "문자 부호 삽입 경향 높이기",
+    "settings_detectionlangs": "인식 언어 목록(영어로 작성)\n비워 둘 경우 인식 언어는 알고리즘이 판단합니다.",
+    "settings_detectionlangs_support": "인식 가능한 언어 목록", 
+    "settings_maxrecordlen": "최대 녹음 유지 시간",
+    "settings_maxtoken": "최대 토큰 사용량",
+    "settings_info_repo": "리포지토리 정보(Github)",
+    "settings_info_project": "개발 과정 기록 노트",
+    "settings_visit": "방문하기",
+    "save_button": "저장",
+    "save_warning": "설정을 적용하려면 저장을 클릭하세요. 설정 사항은 프로그램 종료 후 적용됩니다."
 }
