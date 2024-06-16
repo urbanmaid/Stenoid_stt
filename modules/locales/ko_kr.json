@@ -21,6 +21,13 @@
     "gpt_request_gramfix_desc": "다음 문장을 번역하지 말고 존재하는 오타와 문법 오류를 고치세요.",
     "gpt_request_gramfix_richpunc": "또한 문장 부호도 삽입하세요.",
 
+    "settingstitle_ui": "UI",
+    "settingstitle_record": "녹음",
+    "settingstitle_recognition": "인식",
+    "settingstitle_hotkey": "단축키",
+    "settingstitle_infos": "프로그램 정보",
+
+    "settings_brightness": "화면 밝기",
     "settings_languages": "언어",
     "settings_model": "인식 모델",
     "settings_apikey": "문법 수정 기능 사용용 API\n절대로 타인과 공유하지 마세요.",
@@ -29,6 +36,11 @@
     "settings_detectionlangs_support": "인식 가능한 언어 목록", 
     "settings_maxrecordlen": "최대 녹음 유지 시간",
     "settings_maxtoken": "최대 토큰 사용량",
+
+    "settings_hotkeyRecord": "녹음",
+    "settings_hotkeyStop": "녹음 중지",
+    "settings_hotkeyInsert": "입력",
+    "settings_hotkeyDiscard": "입력 내용 지우기",
     "settings_info_repo": "리포지토리 정보(Github)",
     "settings_info_project": "개발 과정 기록 노트",
     "settings_visit": "방문하기",

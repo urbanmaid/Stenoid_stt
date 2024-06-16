@@ -1,5 +1,6 @@
 import asyncio
 import customtkinter
+import keyboard
 import os
 import threading
 import tkinter
@@ -109,10 +110,10 @@ def languages_swap():
     stringVarLangs.set(usingLanguages[usingLanguagesIndex])
 
 def gram_fix():
-    fixedText = (recognizerW.GramFix(resultTextbox.get("1.0", tkinter.END), settingsWindow.settingsList["use_rich_punc"]))
-    resultTextbox.delete("1.0", tkinter.END)
-    resultTextbox.insert(tkinter.END, fixedText)
-    # print(fixedText)
+    if (resultTextbox.get("1.0", tkinter.END)!=None):
+        fixedText = (recognizerW.GramFix(resultTextbox.get("1.0", tkinter.END), settingsWindow.settingsList["use_rich_punc"]))
+        resultTextbox.delete("1.0", tkinter.END)
+        resultTextbox.insert(tkinter.END, fixedText)
 
 def open_settings():
     settingsWindow.openSettings()
@@ -124,12 +125,23 @@ def copy_converted_text():
     pyperclip.copy(resultTextbox.get("1.0", tkinter.END))
     stringVarStatus.set(locale.data["status_copied"])
     stringVarStatusAux.set(locale.data["statusaux_copied"])
-    time.sleep(1)
+    resultTextbox.after(1000, reset_status)
+
+def reset_status():
     stringVarStatus.set(locale.data["status_idle"])
     stringVarStatusAux.set(locale.data["statusaux_idle"])
 
+def hotkey_detection():
+    keyboard.add_hotkey(settingsWindow.settingsList["hotkey_record"], do_record_sync)
+    keyboard.add_hotkey(settingsWindow.settingsList["hotkey_stop"], stop_record_sync)
+    keyboard.add_hotkey(settingsWindow.settingsList["hotkey_insert"], copy_converted_text)
+    keyboard.add_hotkey(settingsWindow.settingsList["hotkey_discard"], discard_result)
+
+key_detection_thread = threading.Thread(target=hotkey_detection, daemon=True)
+key_detection_thread.start()
+
 # UI Settings
-customtkinter.set_appearance_mode("System")
+customtkinter.set_appearance_mode(settingsWindow.settingsList["brightness"])
 customtkinter.set_default_color_theme("blue")
 
 main = customtkinter.CTkFrame(master = app)

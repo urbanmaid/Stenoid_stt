@@ -1,6 +1,7 @@
 {
-    "language": "en_us.json",
-    "api_key": "sk-proj-4jDwasVshogaQOc9sNUtT3BlbkFJFpU8Qh7om7gfQjE6gAFl\n",
+    "brightness": "system",
+    "language": "ko_kr.json",
+    "api_key": "",
     "use_rich_punc": 1,
     "max_record_len": 30.0,
     "max_token": 200.0,
@@ -10,5 +11,9 @@
         "Korean",
         "Japanese",
         "Russian"
-    ]
+    ],
+    "hotkey_record": "ctrl+shift+r",
+    "hotkey_stop": "ctrl+shift+d",
+    "hotkey_insert": "ctrl+space+f",
+    "hotkey_discard": "ctrl+space+d"
 }

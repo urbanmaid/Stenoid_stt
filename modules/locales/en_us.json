@@ -21,6 +21,13 @@
     "gpt_request_gramfix_desc": "Fix the grammar and punctuation of this sentence, without Language Changes.",
     "gpt_request_gramfix_richpunc": "Also it needs punctuation fix.",
 
+    "settingstitle_ui": "UI",
+    "settingstitle_record": "Record",
+    "settingstitle_recognition": "Recognition",
+    "settingstitle_hotkey": "Hotkeys",
+    "settingstitle_infos": "Program Info",
+
+    "settings_brightness": "Brightness Appearance",
     "settings_languages": "Languages",
     "settings_model": "Recognition Model",
     "settings_apikey": "API Key for Grammar Fix\nKeep it Private Anytime.",
@@ -29,6 +36,11 @@
     "settings_detectionlangs_support": "Supported Languages List", 
     "settings_maxrecordlen": "Max Record Time",
     "settings_maxtoken": "Max Token Usage",
+
+    "settings_hotkeyRecord": "Record Control Hotkey",
+    "settings_hotkeyStop": "Stop Hotkey",
+    "settings_hotkeyInsert": "Input Hotkey",
+    "settings_hotkeyDiscard": "Discard Hotkey",
     "settings_info_repo": "Repository Info(Github)",
     "settings_info_project": "Project Documentations",
     "settings_visit": "Visit",
